@@ -79,3 +79,43 @@ sr.reveal(`.projects__card, .services__card, .experience__card`, {interval: 100}
 function fun(){
     alert("discord not avaible");
 }
+
+// Get the audio element
+const audioElement = document.getElementById("background-music");
+     
+// Function to check if audio is playing
+function isPlaying(audio) {
+    return !audio.paused && !audio.ended && audio.readyState > 2;
+}
+
+// Event listener to ensure autoplay works after user interaction (for stricter browsers)
+document.addEventListener("click", () => {
+    if (!isPlaying(audioElement)) {
+        audioElement.play().catch(error => {
+            console.error("Autoplay failed. User interaction is required:", error);
+        });
+    }
+});
+
+// Add fallback logic for loading audio sources
+audioElement.addEventListener("error", () => {
+    console.error("Audio failed to load. Check file paths or URLs.");
+    alert("Audio failed to load. Please check your connection or file availability.");
+});
+
+// Log when audio starts playing
+audioElement.addEventListener("play", () => {
+    console.log("Audio is playing.");
+});
+
+// Log when audio is paused
+audioElement.addEventListener("pause", () => {
+    console.log("Audio is paused.");
+});
+
+// Attempt to play audio on page load
+window.addEventListener("load", () => {
+    audioElement.play().catch(error => {
+        console.warn("Autoplay might be blocked by the browser:", error);
+    });
+});
